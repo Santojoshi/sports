@@ -185,9 +185,10 @@
                             </div>
                         <?php } ?>
                         <div class="card-body card-block">
-                            <form action="<?= site_url('upload_product')?>" method="post" class="" enctype="multipart/form-data">
+                            <form action="<?= site_url('edit-product')?>" method="post" class="" enctype="multipart/form-data">
                                 <label for=""><i class="fa fa-rocket"></i> Enter Product Name</label>
                                 <input type="text" class="form-control" name="product_name" value="<?= $product['product_name'] ?>">
+                                <input type="hidden" class="form-control" name="product_id" value="<?= $product['id'] ?>">
                                 <br>
                                 <label for=""><i class="fa fa-rocket"></i> Select Category</label>
                                 <select name="category" id="" class="form-control" value="<?= set_value('category') ?>">
@@ -207,11 +208,9 @@
                                 </select>                    
                                 <br>
                                 <label for=""><i class="fa fa-rocket"></i> Is Featured?</label><br>
-                                <input type="radio" name="is_feature" id="" value="1" <?php if ($product['is_featured']==1) {
-                                 echo 'checked'; }?>>
+                                <input type="radio" name="is_feature" id="" value="1" <?php if ($product['is_feature']==1) {echo 'checked'; }?>>
                                 <label for="">Yes</label>
-                                <input type="radio" name="is_feature" id="" value="0" <?php if ($product['is_featured']==0) {
-                                 echo 'checked'; }?>>
+                                <input type="radio" name="is_feature" id="" value="2" <?php if ($product['is_feature']==2) {echo 'checked'; }?>>
                                 <label for="">No</label>
                                 <br>
                                 <br>
@@ -226,7 +225,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="custom-file mt-5">
-                                            <input type="file" class="custom-file-input" name="main_image" id="inputGroupFile01" onchange="displayImage()" value=<?= $product['main_image'] ?>>
+                                            <input type="file" class="custom-file-input" name="main_image" id="inputGroupFile01" onchange="displayImage()" value="<?= $product['main_image'] ?>">
                                             <label class="custom-file-label" for="inputGroupFile01">Choose Main Image</label>
                                         </div>
                                     </div>
@@ -242,9 +241,11 @@
                                             <label class="custom-file-label" for="inputFile1">Sub Image1</label>
                                             <div class="sub-image mb-2 mt-3">
                                                 <?php if (!empty($product['sub_image1'])) { ?>
-                                                <img id="previewImage4" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image1']; ?>"
+                                                <img id="previewImage1" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image1']; ?>"
                                                 alt="No Image">
-                                                <?php } ?>
+                                                <?php } else { ?>
+                                                <img id="previewImage1" class="previewImage" src="">
+                                           <?php }?>
                                             </div>
                                         </div>
                                     </div>
@@ -254,9 +255,11 @@
                                             <label class="custom-file-label" for="inputFile2">Sub Image2</label>
                                             <div class="sub-image mb-2 mt-3">
                                                 <?php if (!empty($product['sub_image2'])) { ?>
-                                                <img id="previewImage4" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image2']; ?>"
+                                                <img id="previewImage2" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image2']; ?>"
                                                 alt="No Image">
-                                                <?php } ?>
+                                                <?php } else { ?>
+                                                <img id="previewImage2" class="previewImage" src="">
+                                           <?php }?>
                                             </div>
                                         </div>
                                     </div>
@@ -266,9 +269,11 @@
                                             <label class="custom-file-label" for="inputFile3">Sub Image3</label>
                                             <div class="sub-image mb-2 mt-3">
                                                 <?php if (!empty($product['sub_image3'])) { ?>
-                                                <img id="previewImage4" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image3']; ?>"
+                                                <img id="previewImage3" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image3']; ?>"
                                                 alt="No Image">
-                                                <?php } ?>
+                                                <?php } else { ?>
+                                                <img id="previewImage3" class="previewImage" src="">
+                                           <?php }?>
                                             </div>
                                         </div>
                                     </div>
@@ -277,10 +282,13 @@
                                             <input type="file" class="custom-file-input" name="sub_image4" id="inputFile4" onchange="displayImages('inputFile4', 'previewImage4')" value=<?= ($product['sub_image4'])? $product['sub_image4']:''; ?>>
                                             <label class="custom-file-label" for="inputFile4">Sub Image4</label>
                                             <div class="sub-image mb-2 mt-3">
-                                                <?php if (!empty($product['sub_image4'])) { ?>
+                                            <?php if (!empty($product['sub_image4'])) { ?>
                                                 <img id="previewImage4" class="previewImage" src="<?= base_url().'/uploads/'.$product['sub_image4']; ?>"
                                                 alt="No Image">
-                                                <?php } ?>
+                                                <?php } else { ?>
+                                                <img id="previewImage4" class="previewImage" src="">
+                                           <?php }?>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -340,4 +348,5 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        
     </script>

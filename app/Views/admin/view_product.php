@@ -200,7 +200,7 @@
                                         <?php foreach($category as $data){ ?>
                                         <tr>
                                             <td><?= $data['category_name'] ?></td>
-                                            <td> <i class="fa fa-pencil" onclick="update_popup(<?= $data['id'] ?>, 'update_category')"></i><i class="fa fa-trash" onclick="delete_item('category_popup')"></i></td>
+                                            <td> <i class="fa fa-pencil" onclick="update_popup(<?= $data['id'] ?>, 'update_category')"></i><i class="fa fa-trash" onclick="delete_item('category_popup',<?= $data['id']?>)"></i></td>
                                             
                                         </tr>
                                         <?php } ?>
@@ -227,7 +227,7 @@
                                         <?php foreach($sub_category as $data){ ?>
                                         <tr>
                                             <td><?= $data['sub_category_name'] ?></td>
-                                            <td> <i class="fa fa-pencil" onclick="update_popup(<?= $data['id'] ?>, 'update_sub_category')"></i><i class="fa fa-trash" onclick="delete_item('sub_category_popup')"></i></td>
+                                            <td> <i class="fa fa-pencil" onclick="update_popup(<?= $data['id'] ?>, 'update_sub_category')"></i><i class="fa fa-trash" onclick="delete_item('sub_category_popup',<?= $data['id']?>)"></i></td>
                                             
                                         </tr>
                                         <?php } ?>
@@ -248,10 +248,7 @@
                     <a href="<?= base_url(); ?>del_category/<?=  $data['id']?>"><button class="btn btn-success">Yes</button></a>
                 </div>
                 <div class="popup" id="sub_category_popup">
-                    <p class="confirm_pera">Confirm Delete Sub Category</p>
-                    <p class="note_pera">Note:- All Products Under This Sub Category Will Also Be DELETED</p>
-                    <button class="btn btn-danger" onclick="set_no()">No</button>
-                    <a href="<?= base_url(); ?>del_sub_category/<?=  $data['id']?>"><button class="btn btn-success">Yes</button></a>
+                    
                 </div>
                 <div class="popup" id="product_popup">
                     <p class="confirm_pera">Confirm Delete Product</p>
@@ -285,7 +282,7 @@
                                             <td><?= $data['price'] ?></td>
                                             <td><?= $data['description'] ?></td>
                                             <td><img src="<?= base_url() ?>/uploads/<?= $data['main_image'] ?>" class="table_image" alt="Img"></td>
-                                            <td> <a href="<?= base_url('edit-product/'.$data['id']) ?>"><i class="fa fa-pencil"></i></a><i class="fa fa-trash" onclick="delete_item('product_popup')"></i></td>
+                                            <td> <a href="<?= base_url('edit-product/'.$data['id']) ?>"><i class="fa fa-pencil"></i></a><i class="fa fa-trash" onclick="delete_item('product_popup',<?= $data['id']?>)"></i></td>
                                             
                                         </tr>
                                         <?php } ?>
@@ -313,7 +310,7 @@
             <br>
             <center>
             <button class="btn btn-danger" onclick="set_no()">Cancel </button>
-                <button class="btn btn-success" onclick="update_cat()">Update</button>
+            <button class="btn btn-success" onclick="update_cat()">Update</button>
             </center>
         </div>
         <?php include_once 'footer.php' ?>
@@ -353,10 +350,31 @@
       $('#sub-category-table').DataTable();
   } );
 
-  function delete_item(pop_id){
+  function delete_item(pop_id, prod_id){
     $(`#${pop_id}`).css('display','block')
-    $(`.back_screen`).css('display','block')
-  }
+    if (pop_id == 'product_popup') {
+        
+        $(`#${pop_id}`).html(`<p class="confirm_pera">Confirm Delete Product</p>
+                        <!-- <p class="note_pera">Note:- All Products Under This Category Will Also Be DELETED</p> -->
+                        <button class="btn btn-danger" onclick="set_no()">No </button>
+                        <a href="<?= base_url(); ?>del_product/${prod_id}"><button class="btn btn-success"> Yes</button></a>`)
+        }
+        else if(pop_id=='category_popup'){
+            $(`#${pop_id}`).html(`<p class="confirm_pera">Confirm Delete Sub Category</p>
+                    <p class="note_pera">Note:- All Products Under This Sub Category Will Also Be DELETED</p>
+                    <button class="btn btn-danger" onclick="set_no()">No</button>
+                    <a href="<?= base_url(); ?>del_category/${prod_id}"><button class="btn btn-success">Yes</button></a>`)
+        }
+        else if(pop_id=='sub_category_popup'){
+            $(`#${pop_id}`).html(`<p class="confirm_pera">Confirm Delete Sub Category</p>
+                    <p class="note_pera">Note:- All Products Under This Sub Category Will Also Be DELETED</p>
+                    <button class="btn btn-danger" onclick="set_no()">No</button>
+                    <a href="<?= base_url(); ?>del_sub_category/${prod_id}"><button class="btn btn-success">Yes</button></a>`)
+        }
+        $(`.back_screen`).css('display','block')
+     }
+
+
   function set_no(){
     $('.popup').css('display','none')
     $('.update_popup').css('display','none')

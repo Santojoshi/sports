@@ -273,9 +273,9 @@
                                 </select>                    
                                 <br>
                                 <label for=""><i class="fa fa-rocket"></i> Is Featured?</label><br>
-                                <input type="radio" name="is_feature" id="" value="1">
+                                <input type="radio" name="is_feature" id="" value='1'>
                                 <label for="">Yes</label>
-                                <input type="radio" name="is_feature" id="" value="0">
+                                <input type="radio" name="is_feature" id="" value='2'>
                                 <label for="">No</label>
                                 <br>
                                 <br>

@@ -68,7 +68,7 @@ class Home extends BaseController
                 'category'=> 'required',
                 'sub_category'=> 'required',
                 'is_feature'=> 'required',
-                'price'=> 'required',
+                'price'=> 'required|numeric',
                 'product_desc'=> 'required|min_length[10]',
                 
             ];
@@ -125,7 +125,7 @@ class Home extends BaseController
                     'category_id'=> $this->request->getPost('category'), 
                     'sub_category_id'=> $this->request->getPost('sub_category'), 
                     'price'=> $this->request->getPost('price'), 
-                    'is_featured'=> $this->request->getPost('is_feature'), 
+                    'is_feature'=> $this->request->getPost('is_feature'), 
                     'description'=> $this->request->getPost('product_desc'), 
                     'main_image'=> $main_img_name, 
                     'sub_image1'=> $sub_img1_name, 
@@ -215,39 +215,55 @@ class Home extends BaseController
 
     public function edit_product($ids=false){
         helper('form');
+        $session = \Config\Services::session();
         $model = new Product_model();
         
         $modelcat = new Category_model();
         $modelscat = new Sub_category_model();
         
         if($this->request->getMethod()=='post') {
+            $ids = $this->request->getPost('product_id');
+            $prod_data = $model->find($ids);
+
             $rules = [
                 'product_name'=> 'required',
                 'category'=> 'required',
                 'sub_category'=> 'required',
                 'is_feature'=> 'required',
-                'price'=> 'required',
+                'price'=> 'required|numeric',
                 'product_desc'=> 'required|min_length[10]',
                 
             ];
             if (!$this->validate($rules)) {
                 $data['valid_error']= $this->validator;
+                
+                $data['category']= $modelcat->findAll();
+                $data['product'] = $model->where('id', $ids)->first();       
+                $data['sub_category']= $modelscat->findAll();
                 return view('admin/edit_product', $data);
             }
             else{
-                $main_img = $this->request->getFile("main_image");
-               
 
-                if(! empty($main_img) )
+                $feature =   $this->request->getPost('is_feature');
+                
+                
+                if(! empty($_FILES['main_image']['name'])  )
                 {
+                $main_img = $this->request->getFile("main_image");
                 $main_img_name =  $main_img->getRandomName();
                 $main_img->move('uploads', $main_img_name);
+                }
+                else {
+                    $main_img_name = $prod_data['main_image'];
                 }
                 
                 if (! empty($_FILES['sub_image1']['name'])) {
                     $sub_img1 = $this->request->getFile('sub_image1');
                     $sub_img1_name =  $sub_img1->getRandomName();
                     $sub_img1->move('uploads', $sub_img1_name);
+                }
+                elseif (!empty($prod_data['sub_image1'])) {
+                    $sub_img1_name = $prod_data['sub_image1'];
                 }
                 else {
                     $sub_img1_name = '';
@@ -283,15 +299,15 @@ class Home extends BaseController
                     'category_id'=> $this->request->getPost('category'), 
                     'sub_category_id'=> $this->request->getPost('sub_category'), 
                     'price'=> $this->request->getPost('price'), 
-                    'is_featured'=> $this->request->getPost('is_feature'), 
-                    'description'=> $this->request->getPost('product_desc'), 
+                    'description'=> $this->request->getPost('product_desc'),
+                    'is_feature' =>  $feature,
                     'main_image'=> $main_img_name, 
                     'sub_image1'=> $sub_img1_name, 
                     'sub_image2'=> $sub_img2_name, 
                     'sub_image3'=> $sub_img3_name, 
                     'sub_image4'=> $sub_img4_name
                 ];
-                $model->save($input);
+                $model->update($ids,$input);
                 return redirect()->to(base_url('view-product'));
             
         }

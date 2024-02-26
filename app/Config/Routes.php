@@ -23,4 +23,4 @@ $routes->match(['get', 'post'], 'update_category/(:num)', 'Home::update_category
 $routes->post('update_category', 'Home::update_category');
 $routes->match(['get', 'post'], 'update_sub_category/(:num)', 'Home::update_sub_category/$1');
 $routes->post('update_sub_category', 'Home::update_sub_category');
-$routes->get('update_product/(:num)', 'Home::update_product/$1');
+// $routes->get('update_product/(:num)', 'Home::update_product/$1');
