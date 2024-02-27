@@ -256,8 +256,11 @@ class Home extends BaseController
                 else {
                     $main_img_name = $prod_data['main_image'];
                 }
-                
+                // sub_image1
                 if (! empty($_FILES['sub_image1']['name'])) {
+                    if (!empty($prod_data['sub_image1'])) {
+                        unlink("uploads/".$prod_data['sub_image1']);
+                    }
                     $sub_img1 = $this->request->getFile('sub_image1');
                     $sub_img1_name =  $sub_img1->getRandomName();
                     $sub_img1->move('uploads', $sub_img1_name);
@@ -268,26 +271,50 @@ class Home extends BaseController
                 else {
                     $sub_img1_name = '';
                 }    
+
+                // sub_image2
                 if (! empty($_FILES['sub_image2']['name'])) {
+                    if (!empty($prod_data['sub_image2'])) {
+                        unlink("uploads/".$prod_data['sub_image2']);
+                    }
                     $sub_img2 = $this->request->getFile('sub_image2');
                     $sub_img2_name =  $sub_img2->getRandomName();
                     $sub_img2->move('uploads', $sub_img2_name);
                 }
+                elseif (!empty($prod_data['sub_image2'])) {
+                    $sub_img2_name = $prod_data['sub_image1'];
+                }
                 else {
                     $sub_img2_name = '';
                 }    
+
+                // sub_image3
                 if (! empty($_FILES['sub_image3']['name'])) {
+                    if (!empty($prod_data['sub_image3'])) {
+                        unlink("uploads/".$prod_data['sub_image3']);
+                    }
                     $sub_img3 = $this->request->getFile('sub_image3');
                     $sub_img3_name =  $sub_img3->getRandomName();
                     $sub_img3->move('uploads', $sub_img3_name);
                 }
+                elseif (!empty($prod_data['sub_image3'])) {
+                    $sub_img3_name = $prod_data['sub_image3'];
+                }
                 else {
                     $sub_img3_name = '';
-                }    
+                }  
+                
+                // sub_image4
                 if (! empty($_FILES['sub_image4']['name'])) {
+                    if (!empty($prod_data['sub_image4'])) {
+                        unlink("uploads/".$prod_data['sub_image4']);
+                    }
                     $sub_img4 = $this->request->getFile('sub_image4');
                     $sub_img4_name =  $sub_img4->getRandomName();
                     $sub_img4->move('uploads', $sub_img4_name);
+                }
+                elseif (!empty($prod_data['sub_image4'])) {
+                    $sub_img4_name = $prod_data['sub_image4'];
                 }
                 else {
                     $sub_img4_name = '';
